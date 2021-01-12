@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Portfolio Backend",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheYMK/New-Portfolio-API.git"
+  },
+  "author": "Kaym Kassai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheYMK/New-Portfolio-API/issues"
+  },
+  "homepage": "https://github.com/TheYMK/New-Portfolio-API#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cloudinary": "^1.23.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "express-validator": "^6.9.2",
+    "firebase-admin": "^9.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.11",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.7",
+    "slugify": "^1.4.6",
+    "stripe": "^8.130.0"
+  }
+}
