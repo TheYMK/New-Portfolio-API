@@ -15,7 +15,19 @@ const projectSchema = new mongoose.Schema(
 			required: true,
 			enum: [ 'Web', 'Mobile', 'Design' ]
 		},
-		description: {
+		description_frontend: {
+			type: String,
+			required: true,
+			maxlength: 2000,
+			text: true // useful for search
+		},
+		description_backend: {
+			type: String,
+			required: true,
+			maxlength: 2000,
+			text: true // useful for search
+		},
+		description_challenges: {
 			type: String,
 			required: true,
 			maxlength: 2000,
