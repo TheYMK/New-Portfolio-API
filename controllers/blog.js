@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
 				error: 'Something wrong happened'
 			});
 		}
-		const { title, body, categories, tags, images } = fields;
+		const { title, body, categories, tags, image } = fields;
 
 		if (!title || !title.length) {
 			return res.status(400).json({
@@ -46,16 +46,16 @@ exports.create = async (req, res) => {
 			});
 		}
 
-		if (!images || images.length === 0) {
+		if (!image || !image.length) {
 			return res.status(400).json({
-				error: 'At least one image is required'
+				error: 'An image is required'
 			});
 		}
 
 		let blog = new Blog();
 		blog.title = title;
 		blog.body = body;
-		blog.images = images;
+		blog.image = image;
 		blog.excerpt = smartTrim(body, 320, ' ', ' ...');
 		blog.slug = slugify(title).toLowerCase();
 		blog.mtitle = `${title} | ${process.env.APP_NAME}`;
@@ -106,7 +106,7 @@ exports.list = async (req, res) => {
 	Blog.find({})
 		.populate('categories', '_id name slug')
 		.populate('tags', '_id name slug')
-		.select('_id title slug excerpt categories tags postedBy createdAt images updatedAt')
+		.select('_id title slug excerpt categories tags postedBy createdAt image updatedAt')
 		.exec((err, data) => {
 			if (err) {
 				return res.status(400).json({
@@ -129,4 +129,82 @@ exports.getTotalCount = async (req, res) => {
 			error: err.message
 		});
 	}
+};
+
+exports.listAllBlogsCategoriesTags = (req, res) => {
+	let limit = req.body.limit ? parseInt(req.body.limit) : 10;
+	let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
+	let blogs;
+	let categories;
+	let tags;
+
+	Blog.find({})
+		.populate('categories', '_id name slug')
+		.populate('tags', '_id name slug')
+		.sort({ createdAt: -1 })
+		.skip(skip)
+		.limit(limit)
+		.select('_id title slug excerpt categories tags postedBy image createdAt updatedAt')
+		.exec((err, data) => {
+			if (err) {
+				return res.json({
+					error: errorHandler(err)
+				});
+			}
+			blogs = data; // blogs
+			// get all categories
+			Category.find({}).exec((err, c) => {
+				if (err) {
+					return res.json({
+						error: errorHandler(err)
+					});
+				}
+				categories = c; // categories
+				// get all tags
+				Tag.find({}).exec((err, t) => {
+					if (err) {
+						return res.json({
+							error: errorHandler(err)
+						});
+					}
+					tags = t;
+					// return all blogs categories tags
+					res.json({ blogs, categories, tags, size: blogs.length });
+				});
+			});
+		});
+};
+
+exports.read = (req, res) => {
+	const slug = req.params.slug.toLowerCase();
+
+	Blog.findOne({ slug })
+		.populate('categories', '_id name slug')
+		.populate('tags', '_id name slug')
+		.select('_id title body slug mtitle mdesc categories tags postedBy image createdAt updatedAt')
+		.exec((err, data) => {
+			if (err) {
+				return res.json({
+					error: errorHandler(err)
+				});
+			}
+			res.json(data);
+		});
+};
+
+exports.remove = (req, res) => {
+	const slug = req.params.slug.toLowerCase();
+	console.log(slug);
+	Blog.findOneAndRemove({ slug }).exec((err, data) => {
+		if (err) {
+			return res.json({
+				error: errorHandler(err)
+			});
+		}
+
+		res.json({
+			sucess: true
+		});
+	});
 };
