@@ -208,3 +208,57 @@ exports.remove = (req, res) => {
 		});
 	});
 };
+
+exports.update = (req, res) => {
+	const slug = req.params.slug.toLowerCase();
+
+	Blog.findOne({ slug }).exec((err, oldBlog) => {
+		if (err) {
+			return res.status(400).json({
+				error: errorHandler(err)
+			});
+		}
+
+		let form = new formidable.IncomingForm();
+
+		form.keepExtensions = true;
+
+		form.parse(req, (err, fields, files) => {
+			console.log(fields);
+			if (err) {
+				return res.status(400).json({
+					error: 'Something wrong happened'
+				});
+			}
+
+			// slug shouldn't change because of the previous slug will be indexed by google and we don't want to change that. So no generation of new slug
+			let slugBeforeMerge = oldBlog.slug;
+			oldBlog = _.merge(oldBlog, fields);
+			oldBlog.slug = slugBeforeMerge;
+
+			const { body, mdesc, categories, tags } = fields;
+
+			if (body) {
+				oldBlog.excerpt = smartTrim(body, 320, ' ', ' ...');
+				oldBlog.mdesc = stripHtml(body.substring(0, 160)).result;
+			}
+			if (categories) {
+				oldBlog.categories = categories.split(',');
+			}
+
+			if (tags) {
+				oldBlog.tags = tags.split(',');
+			}
+
+			oldBlog.save((err, result) => {
+				if (err) {
+					return res.status(400).json({
+						error: errorHandler(err)
+					});
+				}
+
+				res.json(result);
+			});
+		});
+	});
+};

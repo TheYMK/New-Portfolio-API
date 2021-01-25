@@ -8,8 +8,8 @@ const {
 	getTotalCount,
 	listAllBlogsCategoriesTags,
 	read,
-	remove
-	// update
+	remove,
+	update
 } = require('../../controllers/blog');
 
 // middlewares
@@ -22,6 +22,6 @@ router.get('/blogs/total', getTotalCount);
 router.post('/blogs-categories-tags', listAllBlogsCategoriesTags);
 router.get('/blog/:slug', read);
 router.delete('/blog/:slug', authCheck, adminCheck, remove);
-// router.put('/blog/:slug', authCheck, adminCheck, update);
+router.put('/blog/:slug', authCheck, adminCheck, update);
 
 module.exports = router;
