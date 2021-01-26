@@ -262,3 +262,24 @@ exports.update = (req, res) => {
 		});
 	});
 };
+
+exports.listRelated = (req, res) => {
+	let limit = req.body.limit ? parseInt(req.body.limit) : 4;
+
+	const { _id, categories } = req.body.blog;
+
+	Blog.find({ _id: { $ne: _id }, categories: { $in: categories } })
+		.limit(limit)
+		.populate('categories', '_id name slug')
+		.populate('tags', '_id name slug')
+		.select('title slug excerpt categories tags image createdAt updatedAt')
+		.exec((err, blogs) => {
+			if (err) {
+				return res.status(400).json({
+					error: 'Blogs not found'
+				});
+			}
+
+			res.json(blogs);
+		});
+};

@@ -9,7 +9,8 @@ const {
 	listAllBlogsCategoriesTags,
 	read,
 	remove,
-	update
+	update,
+	listRelated
 } = require('../../controllers/blog');
 
 // middlewares
@@ -23,5 +24,6 @@ router.post('/blogs-categories-tags', listAllBlogsCategoriesTags);
 router.get('/blog/:slug', read);
 router.delete('/blog/:slug', authCheck, adminCheck, remove);
 router.put('/blog/:slug', authCheck, adminCheck, update);
+router.post('/blog/related', listRelated);
 
 module.exports = router;
