@@ -9,6 +9,10 @@ const orderSchema = new mongoose.Schema(
 			enum: [ 'basic', 'standard', 'premium', 'ultimate' ],
 			required: true
 		},
+		order_price: {
+			type: Number,
+			default: 0
+		},
 		business_description: {
 			type: String,
 			maxlength: 10000
