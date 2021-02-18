@@ -25,7 +25,6 @@ const orderSchema = new mongoose.Schema(
 			type: String,
 			maxlength: 10000
 		},
-
 		features_description: {
 			type: String,
 			maxlength: 10000
@@ -56,6 +55,15 @@ const orderSchema = new mongoose.Schema(
 			default: 'In Review',
 			enum: [ 'In Review', 'Approved', 'Processing', 'On Hold', 'Cancelled', 'Completed' ],
 			required: true
+		},
+		// For ultimate plan
+		logo_description: {
+			type: String,
+			maxlength: 10000
+		},
+		businesscard_description: {
+			type: String,
+			maxlength: 10000
 		}
 		// payment_intent: {},
 

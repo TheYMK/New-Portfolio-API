@@ -101,3 +101,16 @@ exports.removeOrder = async (req, res) => {
 		});
 	}
 };
+
+exports.getTotalCount = async (req, res) => {
+	try {
+		const totalCount = await Order.find({}).estimatedDocumentCount().exec();
+
+		res.json(totalCount);
+	} catch (err) {
+		console.log(`====> ${err}`);
+		res.status(400).json({
+			error: err.message
+		});
+	}
+};
