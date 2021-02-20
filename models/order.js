@@ -15,27 +15,33 @@ const orderSchema = new mongoose.Schema(
 		},
 		business_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		},
 		current_website_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		},
 		project_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		},
 		features_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		},
 		audience_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		},
 		budget_and_deadline_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		},
 		//personal
 		client_fullname: {
@@ -59,11 +65,13 @@ const orderSchema = new mongoose.Schema(
 		// For ultimate plan
 		logo_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		},
 		businesscard_description: {
 			type: String,
-			maxlength: 10000
+			maxlength: 10000,
+			default: 'Empty'
 		}
 		// payment_intent: {},
 
